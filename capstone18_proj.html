@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        .form-container, .welcome-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            display: none;
+        }
+        .form-container h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .form-container input, .form-container select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .form-container button:hover {
+            background-color: #45a049;
+        }
+        .switch-link {
+            margin-top: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            color: #357AE8;
+            text-decoration: underline;
+        }
+        .switch-link:hover {
+            color: #1a73e8;
+        }
+    </style>
+</head>
+<body>
+    <!-- Registration Form -->
+    <div class="form-container" id="registration-container">
+        <h1>Register</h1>
+        <form id="registrationForm">
+            <label for="regUsername">Username:</label>
+            <input type="text" id="regUsername" name="regUsername" required>
+            
+            <label for="regPassword">Password:</label>
+            <input type="password" id="regPassword" name="regPassword" required>
+            
+            <button type="button" onclick="handleRegistration()">Register</button>
+        </form>
+        <div class="switch-link" onclick="switchToLogin()">Already have an account? Login</div>
+    </div>
+
+    <!-- Login Form -->
+    <div class="form-container" id="login-container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="designation">Designation:</label>
+            <select id="designation" name="designation" required>
+                <option value="">Select Designation</option>
+                <option value="CEO">CEO</option>
+                <option value="Manager">Manager</option>
+                <option value="Employee">Employee</option>
+                <option value="Others">Others</option>
+            </select>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <button type="button" onclick="handleLogin()">Login</button>
+        </form>
+        <div class="switch-link" onclick="switchToRegister()">Don't have an account? Register</div>
+    </div>
+
+    <!-- Welcome Section -->
+    <div class="welcome-container" id="welcome-container">
+        <h1>Welcome!</h1>
+        <p>Click below to access the Google Colab project:</p>
+        <a href="https://colab.research.google.com/drive/1QgNAiReMIHRYdwalS02HwbM_Fxdsmgn5?usp=sharing" target="_blank">Open Google Colab</a>
+    </div>
+
+    <script>
+        let users = {};
+
+        // Show registration form initially
+        document.getElementById("registration-container").style.display = "block";
+
+        function switchToRegister() {
+            document.getElementById("login-container").style.display = "none";
+            document.getElementById("registration-container").style.display = "block";
+        }
+
+        function switchToLogin() {
+            document.getElementById("registration-container").style.display = "none";
+            document.getElementById("login-container").style.display = "block";
+        }
+
+        // Handle registration
+        function handleRegistration() {
+            const username = document.getElementById("regUsername").value;
+            const password = document.getElementById("regPassword").value;
+
+            if (!username || !password) {
+                alert("Please fill in all fields!");
+                return;
+            }
+
+            users[username] = password;
+            alert("Registration successful! Please login.");
+            switchToLogin();
+        }
+
+        // Handle login
+        function handleLogin() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const designation = document.getElementById("designation").value;
+
+            if (!username || !password || !designation) {
+                alert("Please fill in all fields!");
+                return;
+            }
+
+            if (!users[username] || users[username] !== password) {
+                alert("Invalid username or password!");
+                return;
+            }
+
+            if (designation === "Others") {
+                alert("UNAUTHORIZED ACCESS IS DENIED");
+                return;
+            }
+
+            // If all conditions are met, show the welcome section
+            document.getElementById("login-container").style.display = "none";
+            document.getElementById("welcome-container").style.display = "block";
+        }
+    </script>
+</body>
+</html>
